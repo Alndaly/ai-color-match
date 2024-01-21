@@ -1,12 +1,8 @@
 import cv2
 import numpy as np
 import gradio as gr
+from lib.color import getRgbChannels
 
-def getRgbChannels(image):
-    b = image[:,:,0]
-    g = image[:,:,1]
-    r = image[:,:,2]
-    return r, g, b
 
 def main(image):
     r,g,b = getRgbChannels(image)
@@ -17,6 +13,8 @@ with gr.Blocks() as app:
     with gr.Row():
         with gr.Column():
             inp = gr.Image(label="调色前")
+            gr.Dropdown(choices=["古风", "扫街", "小清新"], label="风格", info="选择调色风格")
+            gr.Slider(0, 100, value=0, label="风格化程度", info="从0到100表示风格话从低到高")
             generateButton = gr.Button("一键调色")
         out = gr.Image(label="调色后")
     generateButton.click(main, inputs=inp, outputs=out)
